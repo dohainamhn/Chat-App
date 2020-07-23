@@ -44,7 +44,7 @@ components.logup = `
     </div>
 `
 components.login = `
-<div class="container">
+<div class="container-login">
         <div class="wrapper">
             <h1>Mindx Chat</h1>
             <form  class="form" id="login-form">

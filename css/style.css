@@ -3,7 +3,10 @@
     padding: 0;
     box-sizing: border-box;
 }
-.container{
+.container-login{
+    background-image: url(../img/login.jpg) !important;
+}
+.container,.container-login{
     top: 0;
     background-image: url(../img/img.jpg);
     background-size: cover;
