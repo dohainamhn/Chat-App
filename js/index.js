@@ -1,4 +1,4 @@
 const init = function(x){
-   setActiveScreen('logup')
+   setActiveScreen('login')
 }
 window.onload = init
