@@ -63,10 +63,11 @@ components.login = `
                 <div class="name justify-content-spacebetween">
                     <span>Don't have an account? <a id="logup" href="#">Register</a></span>
                     <button class="btn"  type="submit">
-                        Register
+                        Login
                     </button>
                 </div>
             </form>
         </div>
     </div>
 `
+components.chatScreen = `<h1 id="welcome"></h1>`

@@ -1,4 +1,4 @@
-function setActiveScreen(x){
+function setActiveScreen(x,data){
     switch(x)
     {
         case "logup":
@@ -32,6 +32,7 @@ function setActiveScreen(x){
                         }
                     }
                     controller.authenticate(data)
+                    controller.logup(data)
                 })
                 login.addEventListener('click',()=>{
                     setActiveScreen('login')
@@ -46,6 +47,7 @@ function setActiveScreen(x){
                 let logup = document.getElementById('logup')
                 login.addEventListener('submit',(x)=>{
                     x.preventDefault()
+                    login.email.value = login.email.value.trim();
                     const data = {
                         email:{
                             value: login.email.value,
@@ -57,12 +59,19 @@ function setActiveScreen(x){
                         }
                     }
                     controller.authenticate(data)
+                    controller.login(data)
                 })
                 logup.addEventListener('click',()=>{
                     setActiveScreen('logup')
                 })
                 break;
             }
+        case "chatScreen":{
+            let screen= document.getElementById('app')
+            screen.innerHTML = components.chatScreen
+            let welcome = document.getElementById('welcome')
+            welcome.innerHTML =`Welcome to ${data.user.displayName}`
+        }
             
     }
 }
