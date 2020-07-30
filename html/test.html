@@ -3,50 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/chat.css">
+    <script src="https://kit.fontawesome.com/e303127aba.js" crossorigin="anonymous"></script>
     <title>Document</title>
-    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="wrapper">
-            <h1>Mindx Chat</h1>
-            <form  class="form" id="register-form">
-                <div class="name">
-                    <div class="inputFirstName">
-                        <input type="text" name="firstName" placeholder="First name...">
-                        <div class="error" id="firstNameError">asdsa</div>
+    <div class="chat-container">
+        <div class="top">Mindx-Chat</div>
+        <div class="first-conversation">First Conversation</div>
+        <div class="main">
+            <div class="left"></div>
+            <div class="chat-box">
+                <div class="message">
+                    <div class="send-message">
+                        <div class="send-message-content">hello hahaha</div>
                     </div>
-                    <div class="inputLastName">
-                        <input type="text" name="lastName" placeholder="Last name...">
-                        <div class="error" id="lastNameError"></div>
-                    </div>
-                </div>
-                <div class="name">
-                    <div class="inputWrapper">
-                        <input type="email" name="email" placeholder="Email...">
-                        <div class="error"></div>
+                    <div class="receive-message">
+                        <div class="receiver">dohainamhn@gmail.com</div>
+                        <div class="receive-message-content">hi hahahaha</div>
                     </div>
                 </div>
-                <div class="name">
-                    <div class="inputWrapper">
-                        <input type="password" name="password" placeholder="Password...">
-                        <div class="error"></div>
-                    </div>
+                <div class="post-message" id="post-message">
+                    <input type="text" name="message" placeholder="Type a message">
+                    <button><i class="fas fa-paper-plane"></i></button>
                 </div>
-                <div class="name">
-                    <div class="inputWrapper">
-                        <input type="password" name="confirmPassword" placeholder="Confirm Password...">
-                        <div class="error"></div>
-                    </div>
-                </div>
-                
-                <div class="name justify-content-spacebetween">
-                    <span>Already have an account? <a id="login" href="#">Login</a></span>
-                    <button class="btn" type="submit">
-                        Register
-                    </button>
-                </div>
-            </form>
+            </div>
+            <div class="right"></div>
         </div>
     </div>
 </body>

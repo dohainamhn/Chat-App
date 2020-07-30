@@ -31,7 +31,7 @@ function setActiveScreen(x,data){
                             name: 'Confirm password'
                         }
                     }
-                    controller.authenticate(data)
+                    controller.checkNull(data)
                     controller.logup(data)
                 })
                 login.addEventListener('click',()=>{
@@ -58,7 +58,7 @@ function setActiveScreen(x,data){
                             name:'Password'
                         }
                     }
-                    controller.authenticate(data)
+                    controller.checkNull(data)
                     controller.login(data)
                 })
                 logup.addEventListener('click',()=>{
@@ -69,10 +69,51 @@ function setActiveScreen(x,data){
         case "chatScreen":{
             let screen= document.getElementById('app')
             screen.innerHTML = components.chatScreen
-            let welcome = document.getElementById('welcome')
-            welcome.innerHTML =`Welcome to ${data.user.displayName}`
+            let sendMessage = document.getElementById('send-message')
+            let a = document.getElementById('post-message')
+            let messageBox = document.getElementById('message-box')
+            a.addEventListener('click',(e)=>{
+                console.log(firebase.auth().currentUser)
+                firebase.auth().signOut().then(function() {
+                    // Sign-out successful.
+                  }).catch(function(error) {
+                    // An error happened.
+                  });   
+            })
+            let input = document.getElementById('input')
+            input.addEventListener('keyup',(e)=>{
+                e.preventDefault()
+                if(input.value.trim() !== ""){
+                    if(e.keyCode == 13){
+                        addNewMessage(input,sendMessage)
+                        messageBox.scrollTop = sendMessage.scrollHeight
+                    }
+                }
+               else if(e.keyCode == 13){
+                    input.value=""
+                }
+            })
         }
             
     }
 }
+
+function addNewMessage(input,sendMessage){
+    const message = {
+        content: input.value,
+        owner: model.currentUser.email
+    }
+    if(message.owner == model.currentUser.email){
+        let html = `<div class="send-message-content">${message.content}</div>`
+        sendMessage.innerHTML += html
+    }
+    else{
+        let html = `
+        <div class="receiver">${message.owner}</div>
+        <div class="receive-message-content">${message.content}</div>`
+        sendMessage.innerHTML += html
+    }
+    input.value=""
+}
+
 window.onload = setActiveScreen

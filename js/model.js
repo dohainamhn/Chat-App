@@ -1,9 +1,8 @@
 const model = {}
-
+model.currentUser = {}
 model.register = (data)=>{
     firebase.auth().createUserWithEmailAndPassword(data.email.value, data.password.value).then(
         (res)=>{
-            console.log(res)
             firebase.auth().currentUser.updateProfile({
                 displayName: data.lastName.value + data.firstName.value,
                 photoURL: "https://example.com/jane-q-user/profile.jpg"
@@ -13,7 +12,7 @@ model.register = (data)=>{
                 setActiveScreen("login",data)
             })
     .catch(function(error) {
-        alert(error.message)
+        controller.authenticate(error)
       });
 }
 model.login = (data)=>{
@@ -23,8 +22,9 @@ model.login = (data)=>{
         }
         else
         setActiveScreen('chatScreen',res)
+        model.currentUser = res.user
     })
     .catch(function(error) {
-        alert(error.message)
+        controller.authenticate(error)
       });
 }

@@ -1,7 +1,7 @@
 const controller = {}
-controller.authenticate = function(data){
+controller.checkNull = function(data){
     for(let x in data)
-    {
+    {   
         let error = document.getElementById(`${x}`)
         if(data[x].value.trim() == ""){
             error.innerHTML =`${data[x].name} is required`
@@ -20,6 +20,24 @@ controller.authenticate = function(data){
         else {
             error.style.display = "none"
         }
+    }
+}
+controller.authenticate = function(error){
+    if(error.code == 'auth/weak-password'){
+        let password = document.getElementById('password')
+        password.innerHTML = 'Password must be more than 6 characters.'
+        password.style.display = 'flex'
+    }
+    else if(error.code == 'auth/email-already-in-use')
+    {
+        let password = document.getElementById('email')
+        password.innerHTML = 'Email is already exist.'
+        password.style.display = 'flex'
+    }
+    else if(error.code == "auth/wrong-password"){
+        let password = document.getElementById('password')
+        password.innerHTML = 'Wrong Password'
+        password.style.display = 'flex'
     }
 }
 controller.logup = function(data){
