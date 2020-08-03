@@ -103,6 +103,7 @@
     right: 0;
     z-index: 4;
     background-color: white;
+    transition: width .35s ease-in-out;
 }
 .slidebar-menu-right:hover .arrow-right{
     display: flex;
@@ -116,6 +117,7 @@
     text-decoration: none;
     margin-top: 10px;
     display: flex;
+  
 }
 .img-card{
     position: relative;
@@ -178,6 +180,7 @@
     position: fixed;
     background-color: white;
     padding: 10px;
+    transition: width .35s ease-in-out;
 }
 .wrap{
     cursor: pointer;

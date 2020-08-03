@@ -76,6 +76,7 @@ function setActiveScreen(x,data){
                 if(input.value.trim() !== ""){
                     if(e.keyCode == 13){
                         model.pushFirebaseStore("conversations",currentChatID,{owner:model.currentUser.email,content:input.value,createdAt:controller.getDate()},"messages")
+                        controller.pullMenuRight('off')
                         input.value=""
                     }
                 }
@@ -85,7 +86,7 @@ function setActiveScreen(x,data){
             })
             model.getAllDataFromFireStore("conversations")
             controller.pullMenuLeft()
-            controller.pullMenuRight()
+            controller.pullMenuRight('off')
             model.getKeyAfterLoadPage()
             controller.logOut()
             

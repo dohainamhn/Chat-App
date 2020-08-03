@@ -80,7 +80,7 @@ controller.logOut = function(){
           });   
     })  
 }
-controller.pullMenuRight = ()=>{
+controller.pullMenuRight = (data)=>{
     let arrowBtn = document.getElementById('arrowBtn')
     let menuRight = document.getElementById('slidebar-menu-right')
     let cardInfo = document.getElementsByClassName('card-body')
@@ -88,7 +88,7 @@ controller.pullMenuRight = ()=>{
         x.style.display = 'none'
     }
     menuRight.style.width = "0px";
-    let x = "off"
+    let x = data
     arrowBtn.addEventListener('click',()=>{
         if(x === 'on')
         {   
