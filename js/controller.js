@@ -73,6 +73,8 @@ controller.logOut = function(){
     a.addEventListener('click',(e)=>{
         firebase.auth().signOut().then(function() {
             var ref = firebase.database().ref("usersOnline/" + model.key).remove();
+            model.userOnline = []
+            model.key = ""
           }).catch(function(error) {
             // An error happened.
           });   

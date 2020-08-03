@@ -133,11 +133,12 @@ function addNewMessage(input){
 }
 
 function addUserOnline(data){
-    
     let view = document.getElementById('card-body')
     let check = model.userOnline.find((item)=> item == data.id)
     console.log(check)
+    console.log('ok1')
     if(check == undefined){
+        console.log('ok2')
         model.userOnline.push(data.id)
         let html =""
         if(data.email !== firebase.auth().currentUser.email){
@@ -167,6 +168,7 @@ function removeUserOnline(data){
 }
 
 function creatConversation(email){
+    model.currentConversation()
     model.listenRealTimeFireStore('conversations',email)
     let db = firebase.firestore();
     var conversations = db.collection("conversations");

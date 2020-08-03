@@ -1,4 +1,7 @@
 const model = {}
+model.currentConversation = ()=>{
+
+} ;
 model.currentUser = {}
 model.userOnline = []
 model.allConversations = []
@@ -67,6 +70,7 @@ model.onListenRealTimeDataBase = (collection)=>{
           
         db.on('child_removed', function(data) {
             removeUserOnline(data.key)
+            model.userOnline.splice(model.userOnline.indexOf(data.key),1)
           });
 }
 // ------------------------firesotre---------------------------------
@@ -86,7 +90,8 @@ model.removeFirebaseStore = (collection,document) =>{
 model.listenRealTimeFireStore = async (collection,email)=>{
         var db = firebase.firestore();
         if(collection === "conversations"){
-            db.collection(collection).where("users","in",[[email,firebase.auth().currentUser.email],[firebase.auth().currentUser.email,email]])
+            model.currentConversation = db.collection(collection)
+            .where("users","in",[[email,firebase.auth().currentUser.email],[firebase.auth().currentUser.email,email]])
             .onSnapshot(function(snapshot) {
                 snapshot.docChanges().forEach(function(change) {
                     if (change.type === "added") {
