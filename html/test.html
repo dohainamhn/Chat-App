@@ -12,7 +12,19 @@
         <div class="top">Mindx-Chat</div>
         <div class="first-conversation">First Conversation</div>
         <div class="main">
-            <div class="left"></div>
+            <div class="left-menu">
+                <div class="wrap">
+                    <div class="info">
+                        from dohainamhn@gmail.com
+                    </div>
+                    <div class="content">
+                        hello boy ....
+                    </div>
+                </div>
+                <div class="arrow-left" onclick="PullLeft()">
+                    <i class="far fa-hand-point-right"></i>
+                </div>
+            </div>
             <div class="chat-box">
                 <div class="message">
                     <div class="send-message">
@@ -28,7 +40,24 @@
                     <button><i class="fas fa-paper-plane"></i></button>
                 </div>
             </div>
-            <div class="right"></div>
+            <div class="slidebar-menu-right " id="slidebar-menu-right">
+                <div class="card-body" id="card-body">
+                    <div class="inner-body-card">
+                        <a href="#"> 
+                            <div class="img-card">
+                                <img src="../img/hieubui.png" class="rounded-circle" alt="">
+                            </div>
+                            <div class="card-info ml-3">
+                                <h6>Bui Van Hiu</h6>
+                                <p>Just Now</p>
+                            </div>
+                        </a>
+                    </div>  
+                </div>
+                <div class="arrow-right" onclick="Pull()">
+                    <i class="far fa-hand-point-left"></i>
+                </div>
+            </div>
         </div>
     </div>
 </body>

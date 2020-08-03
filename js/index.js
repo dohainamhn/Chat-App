@@ -9,7 +9,6 @@ const init = function(x){
     messagingSenderId: "922317285890",
     appId: "1:922317285890:web:fbac59705c66cf64a7551b"
   };
-  // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   firebase.auth().onAuthStateChanged(function(user) {
     if(user){
@@ -17,12 +16,28 @@ const init = function(x){
         setActiveScreen('chatScreen')
         model.currentUser.email = user.email
       }
+      else{
+        setActiveScreen('login')
+      }
     }
     else{
       setActiveScreen('login')
     }
   });
 }
+
+
+
+// function a(){
+//   var db = firebase.firestore();
+//   db.collection("users").get()
+//   .then(function(response) {
+//       console.log(response.data());
+//   })
+//   .catch(function(error) {
+//       console.error("Error adding document: ", error);
+//   });
+// }
 
 
 window.onload = init

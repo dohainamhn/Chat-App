@@ -1,3 +1,4 @@
+let currentChatID = "MvE5TcYcf0aeMDdcLKpD"
 function setActiveScreen(x,data){
     switch(x)
     {
@@ -69,51 +70,137 @@ function setActiveScreen(x,data){
         case "chatScreen":{
             let screen= document.getElementById('app')
             screen.innerHTML = components.chatScreen
-            let sendMessage = document.getElementById('send-message')
-            let a = document.getElementById('post-message')
-            let messageBox = document.getElementById('message-box')
-            a.addEventListener('click',(e)=>{
-                console.log(firebase.auth().currentUser)
-                firebase.auth().signOut().then(function() {
-                    // Sign-out successful.
-                  }).catch(function(error) {
-                    // An error happened.
-                  });   
-            })
+            
             let input = document.getElementById('input')
             input.addEventListener('keyup',(e)=>{
                 e.preventDefault()
                 if(input.value.trim() !== ""){
                     if(e.keyCode == 13){
-                        addNewMessage(input,sendMessage)
-                        messageBox.scrollTop = sendMessage.scrollHeight
+                        model.pushFirebaseStore("conversations",currentChatID,{owner:model.currentUser.email,content:input.value,creatAt:controller.getDate()},"messages")
+                        input.value=""
                     }
                 }
                else if(e.keyCode == 13){
                     input.value=""
                 }
             })
+            creatConversation('dohainamhn@gmail.com')
+            controller.pullMenuLeft()
+            controller.pullMenuRight()
+            model.listenRealTimeFireStore("usersOnline",)
+            model.getKeyAfterLoadPage()
+            controller.logOut()
+            // model.onDisconected()
         }
-            
     }
 }
 
-function addNewMessage(input,sendMessage){
-    const message = {
-        content: input.value,
-        owner: model.currentUser.email
-    }
-    if(message.owner == model.currentUser.email){
-        let html = `<div class="send-message-content">${message.content}</div>`
-        sendMessage.innerHTML += html
+function addNewMessage(input){
+    let sendMessage = document.getElementById('send-message')
+    let messageBox = document.getElementById('message-box')
+    if(input.length === undefined){
+        if(input.owner == model.currentUser.email){
+            let html = `<div class="send-message-content">${input.content}</div>`
+            sendMessage.innerHTML += html
+        }
+        else{
+            let html = `
+            <div class="receive-message">
+            <div class="receiver">${input.owner}</div>
+            <div class="receive-message-content">${input.content}</div>
+            </div>
+            `
+            sendMessage.innerHTML += html
+        }
     }
     else{
-        let html = `
-        <div class="receiver">${message.owner}</div>
-        <div class="receive-message-content">${message.content}</div>`
-        sendMessage.innerHTML += html
+        sendMessage.innerHTML = ""
+        for(let item of input){
+            if(item.owner == model.currentUser.email){
+                let html = `<div class="send-message-content">${item.content}</div>`
+                sendMessage.innerHTML += html
+            }
+            else{
+                let html = `
+                <div class="receive-message">
+                <div class="receiver">${item.owner}</div>
+                <div class="receive-message-content">${item.content}</div>
+                </div>
+                `
+                sendMessage.innerHTML += html
+            }
+        }
     }
-    input.value=""
+    messageBox.scrollTop = sendMessage.scrollHeight
+}
+
+function addUserOnline(data){
+    let view = document.getElementById('card-body')
+    let html =""
+    for(let item of data){
+        if(item.email !== firebase.auth().currentUser.email){
+             html +=`
+            <div class="inner-body-card" id="${item.id}" >
+                <a href="#" onclick="creatConversation('${item.email}')"> 
+                    <div class="img-card">
+                        <img src="../img/hieubui.png" class="rounded-circle" alt="">
+                    </div>
+                    <div class="card-info ml-3">
+                        <h6>${item.name}</h6>
+                        <p>${item.email}</p>
+                    </div>
+                </a>
+            </div>  
+            `
+        }  
+    }
+    view.innerHTML = html
+}
+
+function removeUserOnline(data){
+   let item = document.getElementById(data)
+   console.log('removed')
+   item.innerHTML = ""
+   item.remove()
+}
+
+function creatConversation(email){
+    model.listenRealTimeFireStore('conversations',email)
+    let db = firebase.firestore();
+    var conversations = db.collection("conversations");
+    conversations
+    .where("users","in",[[email,firebase.auth().currentUser.email],[firebase.auth().currentUser.email,email]])
+    .get()
+    .then((item)=>{
+        if(!item.empty){
+            let data = []
+            item.forEach((users)=>{
+                currentChatID = users.id
+                users.data().messages.forEach((item)=>{
+                let message = {
+                    owner: item.owner,
+                    content: item.content
+                }
+                data.push(message)
+               })
+            })
+            addNewMessage(data)
+        }
+        else{
+            conversations.add({
+                creatAt:"",
+                messages:[],
+                tittle:"",
+                users:[email,firebase.auth().currentUser.email]
+            }).then(function(docRef) {
+                console.log("conversation is created with ID: ", docRef.id);
+                currentChatID = docRef.id
+            })
+            .catch(function(error) {
+                console.error("Error creating conversation: ", error);
+            });
+        }
+    }) 
 }
 
 window.onload = setActiveScreen
