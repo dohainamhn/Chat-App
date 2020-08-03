@@ -25,19 +25,4 @@ const init = function(x){
     }
   });
 }
-
-
-
-// function a(){
-//   var db = firebase.firestore();
-//   db.collection("users").get()
-//   .then(function(response) {
-//       console.log(response.data());
-//   })
-//   .catch(function(error) {
-//       console.error("Error adding document: ", error);
-//   });
-// }
-
-
 window.onload = init

@@ -61,7 +61,6 @@ controller.login = function(data){
         data.password.value !== ""
     ){
         model.login(data)
-        console.log('tomodel Login')
     }
 }
 controller.logOut = function(){
@@ -79,11 +78,11 @@ controller.pullMenuRight = ()=>{
     let arrowBtn = document.getElementById('arrowBtn')
     let menuRight = document.getElementById('slidebar-menu-right')
     let cardInfo = document.getElementsByClassName('card-body')
-    // for(let x of cardInfo){
-    //     x.style.display = 'none'
-    // }
-    // menuRight.style.width = "0px";
-    let x = "on"
+    for(let x of cardInfo){
+        x.style.display = 'none'
+    }
+    menuRight.style.width = "0px";
+    let x = "off"
     arrowBtn.addEventListener('click',()=>{
         if(x === 'on')
         {   
@@ -134,4 +133,28 @@ controller.getDate = ()=>{
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     return date+' '+time;
+}
+controller.checkUndefine = (item)=>{
+    if(item.data().messages[item.data().messages.length-1]['content'] !== undefined){
+        return item.data().messages[item.data().messages.length-1]['content']
+    }
+}
+controller.checkEmail = (item)=>{
+    let user = ""
+    for(let x of item.data().users)
+        {   
+            if(x !== firebase.auth().currentUser.email)
+            user = x
+        }
+    return user    
+}
+controller.sortByTimeStamp = (data)=>{
+    let arrAfterSort = data.sort((a,b)=>{
+        return  b.createdAt - a.createdAt
+    })
+    return arrAfterSort
+}
+controller.convertToTimeStamp = (data)=>{
+    let timeStamp = (new Date(data).getTime()/1000)
+    return timeStamp
 }

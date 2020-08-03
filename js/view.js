@@ -70,13 +70,12 @@ function setActiveScreen(x,data){
         case "chatScreen":{
             let screen= document.getElementById('app')
             screen.innerHTML = components.chatScreen
-            
             let input = document.getElementById('input')
             input.addEventListener('keyup',(e)=>{
                 e.preventDefault()
                 if(input.value.trim() !== ""){
                     if(e.keyCode == 13){
-                        model.pushFirebaseStore("conversations",currentChatID,{owner:model.currentUser.email,content:input.value,creatAt:controller.getDate()},"messages")
+                        model.pushFirebaseStore("conversations",currentChatID,{owner:model.currentUser.email,content:input.value,createdAt:controller.getDate()},"messages")
                         input.value=""
                     }
                 }
@@ -84,13 +83,11 @@ function setActiveScreen(x,data){
                     input.value=""
                 }
             })
-            creatConversation('dohainamhn@gmail.com')
+            model.getAllDataFromFireStore("conversations")
             controller.pullMenuLeft()
             controller.pullMenuRight()
-            model.listenRealTimeFireStore("usersOnline",)
             model.getKeyAfterLoadPage()
             controller.logOut()
-            // model.onDisconected()
         }
     }
 }
@@ -137,23 +134,21 @@ function addNewMessage(input){
 function addUserOnline(data){
     let view = document.getElementById('card-body')
     let html =""
-    for(let item of data){
-        if(item.email !== firebase.auth().currentUser.email){
+        if(data.email !== firebase.auth().currentUser.email){
              html +=`
-            <div class="inner-body-card" id="${item.id}" >
-                <a href="#" onclick="creatConversation('${item.email}')"> 
+            <div class="inner-body-card" id="${data.id}" >
+                <a href="#" onclick="creatConversation('${data.email}')"> 
                     <div class="img-card">
                         <img src="../img/hieubui.png" class="rounded-circle" alt="">
                     </div>
                     <div class="card-info ml-3">
-                        <h6>${item.name}</h6>
-                        <p>${item.email}</p>
+                        <h6>${data.name}</h6>
+                        <p>${data.email}</p>
                     </div>
                 </a>
             </div>  
             `
-        }  
-    }
+        } 
     view.innerHTML = html
 }
 
