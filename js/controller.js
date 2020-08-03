@@ -44,6 +44,11 @@ controller.authenticate = function(error){
         email.innerHTML = 'Email does not exist.'
         email.style.display = 'flex'
     }
+    else if(error.code =="auth/invalid-email"){
+        let email = document.getElementById('email')
+        email.innerHTML = 'Email must have (.com) in the end'
+        email.style.display = 'flex'
+    }
 }
 controller.logup = function(data){
     if(data.email !== "" &&
@@ -67,12 +72,11 @@ controller.logOut = function(){
     let a = document.getElementById('post-message')
     a.addEventListener('click',(e)=>{
         firebase.auth().signOut().then(function() {
-            model.removeFirebaseStore('usersOnline',model.key)
+            var ref = firebase.database().ref("usersOnline/" + model.key).remove();
           }).catch(function(error) {
             // An error happened.
           });   
-    })
-    
+    })  
 }
 controller.pullMenuRight = ()=>{
     let arrowBtn = document.getElementById('arrowBtn')

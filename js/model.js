@@ -20,6 +20,7 @@ model.register = (data)=>{
                 setActiveScreen("login",data)
             })
     .catch(function(error) {
+        console.log(error);
         controller.authenticate(error)
     });
 }
@@ -56,17 +57,17 @@ model.onDisconected = ()=>{
 }
 model.onListenRealTimeDataBase = (collection)=>{
     let db = firebase.database().ref('usersOnline');
-    db.on('child_added', function(data) {
-        addUserOnline({
-            id: data.key,
-            name: data.val().name,
-            email: data.val().email
-        })
-      });
-      
-    db.on('child_removed', function(data) {
-        removeUserOnline(data.key)
-      });
+        db.on('child_added', function(data) {
+            addUserOnline({
+                id: data.key,
+                name: data.val().name,
+                email: data.val().email
+            })
+          });
+          
+        db.on('child_removed', function(data) {
+            removeUserOnline(data.key)
+          });
 }
 // ------------------------firesotre---------------------------------
 model.pushFirebaseStore = (collection,document,data,field)=>{
