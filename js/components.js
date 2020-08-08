@@ -73,16 +73,11 @@ components.login = `
 components.chatScreen = `
 <div class="chat-container">
     <div class="top">Mindx-Chat</div>
-    <div class="first-conversation">First Conversation</div>
+    <div id="title" class="first-conversation">First Conversation</div>
     <div class="main">
     <div class="left-menu" id="left-menu">
-        <div class="wrap">
-            <div class="info">
-                from 
-            </div>
-            <div class="content">
-                hello boy ....
-            </div>
+        <div class="inner-left-menu" id="inner-left-menu">
+        
         </div>
         <div class="arrow-left" id="arrow-left">
             <i class="far fa-hand-point-right"></i>

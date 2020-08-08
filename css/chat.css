@@ -193,11 +193,14 @@
     padding: 10px;
     transition: width .35s ease-in-out;
 }
-.wrap{
+.inner-left-menu{
     cursor: pointer;
-    border: 1px solid black;
     padding: 10px;
     transition: width 2s;
+}
+.wrap{
+    margin-bottom: 20px;
+    border-bottom: gray 1px solid;
 }
 .info{
     

@@ -87,7 +87,6 @@ function setActiveScreen(x,data){
                 }
             })
             model.getAllDataFromFireStore(collectionName)
-            controller.pullMenuLeft("off")
             controller.pullMenuRight('off')
             model.getKeyAfterLoadPage()
             controller.logOut()
@@ -135,7 +134,34 @@ function addNewMessage(input){
     }
     messageBox.scrollTop = sendMessage.scrollHeight
 }
-
+function addListMessage(data){
+    let leftMenu = document.getElementById('inner-left-menu')
+    let title = document.getElementById('title')
+    let html = ""
+    if(data !== undefined){
+        for(let x of data){
+            let message =""
+            if(x.lastMessage.length > 10)
+            {
+                message = `${x.lastMessage.slice(0,10)}...`
+            }
+            else message = x.lastMessage
+            html += `
+            <div class="wrap" onclick="creatConversation('${x.email}')">
+                <div class="info">
+                    ${x.email} 
+                </div>
+                <div class="content">
+                    ${message}
+                </div>
+            </div>`
+        }
+        leftMenu.innerHTML = html
+    }
+    else if(data == null){
+        title.innerHTML = "Hãy Bắt Đầu Cuộc Trò Chuyện Bằng Cách Click Vào Menu Phải Và Chọn Người Online"
+    }
+}
 function addUserOnline(data){
     let view = document.getElementById('card-body')
     let check = model.userOnline.find((item)=> item == data.id)
@@ -147,7 +173,7 @@ function addUserOnline(data){
             <div class="inner-body-card" id="${data.id}" >
                 <a href="#" onclick="creatConversation('${data.email}')"> 
                     <div class="img-card">
-                        <img src="" class="rounded-circle" alt="">
+                        <img src="../Chat-App/img/hieubui.png" class="rounded-circle" alt="">
                     </div>
                     <div class="card-info ml-3">
                         <h6>${data.name}</h6>
@@ -173,6 +199,8 @@ function creatConversation(email){
     model.listenRealTimeFireStore(collectionName,email)
     let db = firebase.firestore();
     var conversations = db.collection(collectionName);
+    // let title = document.getElementById('title')
+    // title.innerHTML = "No Title"
     conversations
     .where("users","in",[[email,firebase.auth().currentUser.email],[firebase.auth().currentUser.email,email]])
     .get()
@@ -190,7 +218,6 @@ function creatConversation(email){
                })
             })
             addNewMessage(data)
-            console.log(data)
         }
         else{
             conversations.add({

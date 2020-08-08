@@ -111,7 +111,7 @@ controller.pullMenuLeft = (data)=>{
     let arrowBtn = document.getElementById('arrow-left')
     let menuLeft = document.getElementById('left-menu')
     let wrap = document.getElementsByClassName('wrap')
-    for(let x of wrap){
+    for(let x of wrap){  
         x.style.display = 'none'
     }
     menuLeft.style.width = "0px";

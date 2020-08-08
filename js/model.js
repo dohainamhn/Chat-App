@@ -46,6 +46,7 @@ model.onDisconected = ()=>{
         email: model.currentUser.email
         
     });
+    console.log('add')
         ref.onDisconnect().remove();
 }
 model.onListenRealTimeDataBase = (collection)=>{
@@ -83,7 +84,7 @@ model.listenRealTimeFireStore = async (collection,email)=>{
             .onSnapshot(function(snapshot) {
                 snapshot.docChanges().forEach(function(change) {
                     if (change.type === "added") {
-                        console.log("New: ", change.doc.data());
+                        
                     }
                     if (change.type === "modified") {
                         let message = {
@@ -135,11 +136,16 @@ model.listenRealTimeFireStore = async (collection,email)=>{
         }
 }
 model.getKeyAfterLoadPage = ()=>{
+    let firstRun = true
     var db = firebase.firestore();
     db.collection("users").where('email','==',firebase.auth().currentUser.email)
     .get()
     .then((querySnapshot)=>{
         querySnapshot.forEach((item)=>{
+            if(firstRun == true){
+                firstRun = false
+                return
+            }
             model.key = item.id
             console.log('get id :'+ model.key)
             model.onDisconected()
@@ -162,19 +168,28 @@ model.getAllDataFromFireStore = (collection)=>{
     var db = firebase.firestore();
     db.collection(collection).where('users','array-contains',firebase.auth().currentUser.email)
     .get()
-    .then((querySnapshot)=>{
+    .then(async (querySnapshot)=>{
         let data = []
         querySnapshot.forEach((item)=>{
             data.push({
                 id: item.id,
                 createdAt: controller.convertToTimeStamp(item.data().messages[item.data().messages.length-1]['createdAt']),
                 lastMessage: controller.checkUndefine(item),
-                owner: controller.checkEmail(item)
+                owner: controller.checkEmail(item),
+                email: item.data().users.filter((item)=>item !== model.currentUser.email)
             })
         })
        model.allConversations = controller.sortByTimeStamp(data)
        if(model.allConversations[0] !== undefined){
             creatConversation(model.allConversations[0]["owner"])
+            addListMessage(model.allConversations)
+            controller.pullMenuLeft("off")
+       }
+       else 
+       {
+            addListMessage()
+            controller.pullMenuLeft("off")
+        
        }
     })
 }
