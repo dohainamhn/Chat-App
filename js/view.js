@@ -182,8 +182,8 @@ function addUserOnline(data){
                 </a>
             </div>  
             `
+            view.innerHTML += html
         } 
-        view.innerHTML += html
     }    
 }
 
