@@ -17,6 +17,7 @@ const init = function(x){
         model.currentUser.email = user.email
       }
       else{
+        alert('please verify your email')
         setActiveScreen('login')
       }
     }

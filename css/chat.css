@@ -67,14 +67,22 @@
     right: 0;
     flex-direction: column;
 }
+.send-message-box{
+    display: flex;
+    color: #ffff;
+    width: 100%;
+    word-break: break-all;
+    justify-content: flex-end;
+}
 .send-message-content{
-    align-self: flex-end;
     margin-top: 5px;
     padding: 5px 10px;
     height: 30px;
     background: #63BDFF;
     border-radius: 5px;
-    color: #ffff;
+    max-width: 40%;
+    height: max-content;
+    word-break: break-all;
 }
 .receive-message{
     right:0;
@@ -88,7 +96,10 @@
     height: 30px;
     background: #c9d4d4;
     border-radius: 5px;
+    max-width: 40%;
+    height: max-content;
     width: max-content;
+    word-break: break-all;
 }
 
 /* --------------------------right menu---------------------*/
@@ -186,6 +197,7 @@
     cursor: pointer;
     border: 1px solid black;
     padding: 10px;
+    transition: width 2s;
 }
 .info{
     

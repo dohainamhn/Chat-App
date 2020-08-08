@@ -1,7 +1,7 @@
 const model = {}
 model.currentConversation = ()=>{
 
-} ;
+};
 model.currentUser = {}
 model.userOnline = []
 model.allConversations = []
@@ -30,19 +30,9 @@ model.register = (data)=>{
 model.login = (data)=>{
     firebase.auth().signInWithEmailAndPassword(data.email.value,data.password.value)
     .then((res)=>{
-        if(!res.user.emailVerified){
-            alert('please verify your email')
-        }
-        else{
+        if(res.user.emailVerified){
             model.currentUser = firebase.auth().currentUser
-            // model.addFireStore("usersOnline",
-            //     {
-            //         name: res.user.displayName,
-            //         email: res.user.email
-            //     });
-            setActiveScreen('chatScreen',res)
         }
-        
     })
     .catch(function(error) {
         controller.authenticate(error)
@@ -76,12 +66,9 @@ model.onListenRealTimeDataBase = (collection)=>{
 // ------------------------firesotre---------------------------------
 model.pushFirebaseStore = (collection,document,data,field)=>{
     var db = firebase.firestore();
-    if(!field) db.collection(collection).doc(document).update(data)
-    else{
-        db.collection(collection).doc(document).update({
-            messages: firebase.firestore.FieldValue.arrayUnion(data)
-        })
-    }
+    db.collection(collection).doc(document).update({
+        messages: firebase.firestore.FieldValue.arrayUnion(data)
+    })
 }
 model.removeFirebaseStore = (collection,document) =>{
     var db = firebase.firestore();
@@ -91,11 +78,11 @@ model.listenRealTimeFireStore = async (collection,email)=>{
         var db = firebase.firestore();
         if(collection === "conversations"){
             model.currentConversation = db.collection(collection)
-            .where("users","in",[[email,firebase.auth().currentUser.email],[firebase.auth().currentUser.email,email]])
+            .where("users","array-contains",model.currentUser.email)
             .onSnapshot(function(snapshot) {
                 snapshot.docChanges().forEach(function(change) {
                     if (change.type === "added") {
-                        console.log("New city: ", change.doc.data());
+                        console.log("New: ", change.doc.data());
                     }
                     if (change.type === "modified") {
                         let message = {
@@ -103,7 +90,7 @@ model.listenRealTimeFireStore = async (collection,email)=>{
                             owner:change.doc.data().messages[change.doc.data().messages.length-1]["owner"]
                         }
                         addNewMessage(message)
-                        console.log("Modified city: ", change.doc.data().messages[change.doc.data().messages.length-1]["content"]);
+                        console.log("Modified: ", change.doc.data().messages[change.doc.data().messages.length-1]["content"]);
                     }
                 });
             });

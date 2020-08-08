@@ -78,7 +78,7 @@ components.chatScreen = `
     <div class="left-menu" id="left-menu">
         <div class="wrap">
             <div class="info">
-                from dohainamhn@gmail.com
+                from 
             </div>
             <div class="content">
                 hello boy ....

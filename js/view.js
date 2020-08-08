@@ -1,4 +1,5 @@
 let currentChatID = "MvE5TcYcf0aeMDdcLKpD"
+let collectionName = "conversations"
 function setActiveScreen(x,data){
     switch(x)
     {
@@ -75,8 +76,9 @@ function setActiveScreen(x,data){
                 e.preventDefault()
                 if(input.value.trim() !== ""){
                     if(e.keyCode == 13){
-                        model.pushFirebaseStore("conversations",currentChatID,{owner:model.currentUser.email,content:input.value,createdAt:controller.getDate()},"messages")
+                        model.pushFirebaseStore(collectionName,currentChatID,{owner:model.currentUser.email,content:input.value,createdAt:controller.getDate()},"messages")
                         controller.pullMenuRight('off')
+                        controller.pullMenuLeft("off")
                         input.value=""
                     }
                 }
@@ -84,11 +86,12 @@ function setActiveScreen(x,data){
                     input.value=""
                 }
             })
-            model.getAllDataFromFireStore("conversations")
-            controller.pullMenuLeft()
+            model.getAllDataFromFireStore(collectionName)
+            controller.pullMenuLeft("off")
             controller.pullMenuRight('off')
             model.getKeyAfterLoadPage()
             controller.logOut()
+            console.log('ok')
             
         }
     }
@@ -99,7 +102,7 @@ function addNewMessage(input){
     let messageBox = document.getElementById('message-box')
     if(input.length === undefined){
         if(input.owner == model.currentUser.email){
-            let html = `<div class="send-message-content">${input.content}</div>`
+            let html = `<div class="send-message-box"><div class="send-message-content">${input.content}</div></div>`
             sendMessage.innerHTML += html
         }
         else{
@@ -116,7 +119,7 @@ function addNewMessage(input){
         sendMessage.innerHTML = ""
         for(let item of input){
             if(item.owner == model.currentUser.email){
-                let html = `<div class="send-message-content">${item.content}</div>`
+                let html = `<div class="send-message-box"><div class="send-message-content">${item.content}</div></div>`
                 sendMessage.innerHTML += html
             }
             else{
@@ -135,12 +138,9 @@ function addNewMessage(input){
 
 function addUserOnline(data){
     let view = document.getElementById('card-body')
-    let check = model.userOnline.find((item)=> item == data.id)
-    console.log(check)
-    console.log('ok1')
-    if(check == undefined){
-        console.log('ok2')
-        model.userOnline.push(data.id)
+    // let check = model.userOnline.find((item)=> item == data.id)
+    // if(check == undefined){
+    //     model.userOnline.push(data.id)
         let html =""
         if(data.email !== firebase.auth().currentUser.email){
              html +=`
@@ -158,7 +158,7 @@ function addUserOnline(data){
             `
         } 
         view.innerHTML += html
-    }    
+    // }    
 }
 
 function removeUserOnline(data){
@@ -170,9 +170,9 @@ function removeUserOnline(data){
 
 function creatConversation(email){
     model.currentConversation()
-    model.listenRealTimeFireStore('conversations',email)
+    model.listenRealTimeFireStore(collectionName,email)
     let db = firebase.firestore();
-    var conversations = db.collection("conversations");
+    var conversations = db.collection(collectionName);
     conversations
     .where("users","in",[[email,firebase.auth().currentUser.email],[firebase.auth().currentUser.email,email]])
     .get()
@@ -190,6 +190,7 @@ function creatConversation(email){
                })
             })
             addNewMessage(data)
+            console.log(data)
         }
         else{
             conversations.add({
