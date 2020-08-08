@@ -199,8 +199,8 @@ function creatConversation(email){
     model.listenRealTimeFireStore(collectionName,email)
     let db = firebase.firestore();
     var conversations = db.collection(collectionName);
-    // let title = document.getElementById('title')
-    // title.innerHTML = "No Title"
+    let title = document.getElementById('title')
+    title.innerHTML = "Hello"
     conversations
     .where("users","in",[[email,firebase.auth().currentUser.email],[firebase.auth().currentUser.email,email]])
     .get()
