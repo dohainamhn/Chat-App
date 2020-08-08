@@ -61,7 +61,12 @@ model.onListenRealTimeDataBase = (collection)=>{
           
         db.on('child_removed', function(data) {
             removeUserOnline(data.key)
-            model.userOnline.splice(model.userOnline.indexOf(data.key),1)
+            console.log('ok')
+            console.log(model.userOnline.indexOf(data.key))
+            if(model.userOnline.indexOf(data.key) !== -1){
+                console.log('removed :' + data.key)
+                model.userOnline.splice(model.userOnline.indexOf(data.key),1)
+            }
           });
 }
 // ------------------------firesotre---------------------------------
