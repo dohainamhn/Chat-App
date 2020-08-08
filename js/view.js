@@ -165,9 +165,9 @@ function addListMessage(data){
 function addUserOnline(data){
     let view = document.getElementById('card-body')
     let check = model.userOnline.find((item)=> item == data.id)
+    let html =""
     if(check == undefined){
         model.userOnline.push(data.id)
-        let html =""
         if(data.email !== firebase.auth().currentUser.email){
              html +=`
             <div class="inner-body-card" id="${data.id}" >
