@@ -48,10 +48,13 @@ model.onDisconected = ()=>{
     });
         ref.onDisconnect().remove();
 }
+model.offListenRealTimeDataBase = (collection)=>{
+    firebase.database().ref(collection).off()
+}
 model.onListenRealTimeDataBase = (collection)=>{
-    let db = firebase.database().ref('usersOnline');
+    let db = firebase.database().ref(collection);
         db.on('child_added', function(data) {
-            console.log("add")
+            console.log(data.val())
             addUserOnline({
                 id: data.key,
                 name: data.val().name,
@@ -150,7 +153,7 @@ model.getKeyAfterLoadPage = ()=>{
             console.log('get id :'+ model.key)
         })
         model.onDisconected()
-        model.onListenRealTimeDataBase()
+        model.onListenRealTimeDataBase('usersOnline')
     })
 }
 model.addFireStore = (collection,data)=>{
@@ -193,5 +196,3 @@ model.getAllDataFromFireStore = (collection)=>{
        }
     })
 }
-
-

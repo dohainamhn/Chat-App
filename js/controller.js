@@ -75,6 +75,8 @@ controller.logOut = function(){
             var ref = firebase.database().ref("usersOnline/" + model.key).remove();
             model.userOnline = []
             model.key = ""
+            model.currentUser = ""
+            model.offListenRealTimeDataBase('usersOnline')
           }).catch(function(error) {
             // An error happened.
           });   
