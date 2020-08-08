@@ -72,7 +72,10 @@ components.login = `
 `
 components.chatScreen = `
 <div class="chat-container">
-    <div class="top">Mindx-Chat</div>
+    <div class="top">
+        <div class"top-title>Mindx-Chat</div>
+        <div class="logout-Button" id="logOut"><i class="fas fa-sign-out-alt"></i></div>
+    </div>
     <div id="title" class="first-conversation">First Conversation</div>
     <div class="main">
     <div class="left-menu" id="left-menu">

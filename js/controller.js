@@ -69,7 +69,7 @@ controller.login = function(data){
     }
 }
 controller.logOut = function(){
-    let a = document.getElementById('post-message')
+    let a = document.getElementById('logOut')
     a.addEventListener('click',(e)=>{
         firebase.auth().signOut().then(function() {
             var ref = firebase.database().ref("usersOnline/" + model.key).remove();

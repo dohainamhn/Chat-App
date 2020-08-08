@@ -7,14 +7,25 @@
     height: 100vh;
 }
 .top{
+    display: flex;
+    justify-content: flex-end;
     width: 100%;
     background: #63BDFF;
     height: 64px;
     line-height: 64px;
-    text-align: center;
     color: #fff;
     font-size: larger;
     box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1);
+}
+.logout-Button{
+    display: flex;
+    width: 50%;
+    justify-content: flex-end;
+}
+.logout-Button i{
+    align-self: center;
+    margin-right: 20px;
+    cursor: pointer;
 }
 .first-conversation{
     font-size: larger;
