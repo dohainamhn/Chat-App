@@ -51,7 +51,7 @@ model.onDisconected = ()=>{
 model.onListenRealTimeDataBase = (collection)=>{
     let db = firebase.database().ref('usersOnline');
         db.on('child_added', function(data) {
-            console.log('add1')
+            console.log("add")
             addUserOnline({
                 id: data.key,
                 name: data.val().name,

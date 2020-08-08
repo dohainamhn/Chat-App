@@ -138,16 +138,16 @@ function addNewMessage(input){
 
 function addUserOnline(data){
     let view = document.getElementById('card-body')
-    // let check = model.userOnline.find((item)=> item == data.id)
-    // if(check == undefined){
-    //     model.userOnline.push(data.id)
+    let check = model.userOnline.find((item)=> item == data.id)
+    if(check == undefined){
+        model.userOnline.push(data.id)
         let html =""
         if(data.email !== firebase.auth().currentUser.email){
              html +=`
             <div class="inner-body-card" id="${data.id}" >
                 <a href="#" onclick="creatConversation('${data.email}')"> 
                     <div class="img-card">
-                        <img src="../Chat-App/img/hieubui.png" class="rounded-circle" alt="">
+                        <img src="" class="rounded-circle" alt="">
                     </div>
                     <div class="card-info ml-3">
                         <h6>${data.name}</h6>
@@ -158,7 +158,7 @@ function addUserOnline(data){
             `
         } 
         view.innerHTML += html
-    // }    
+    }    
 }
 
 function removeUserOnline(data){
