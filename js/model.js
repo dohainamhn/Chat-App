@@ -40,13 +40,12 @@ model.login = (data)=>{
 }
 
 model.onDisconected = ()=>{
+    console.log('add')
     var ref = firebase.database().ref("usersOnline/" + model.key);
         ref.set({
         name: firebase.auth().currentUser.displayName,
         email: model.currentUser.email
-        
     });
-    console.log('add')
         ref.onDisconnect().remove();
 }
 model.onListenRealTimeDataBase = (collection)=>{
@@ -142,15 +141,11 @@ model.getKeyAfterLoadPage = ()=>{
     .get()
     .then((querySnapshot)=>{
         querySnapshot.forEach((item)=>{
-            if(firstRun == true){
-                firstRun = false
-                return
-            }
             model.key = item.id
             console.log('get id :'+ model.key)
-            model.onDisconected()
-            model.onListenRealTimeDataBase()
         })
+        model.onDisconected()
+        model.onListenRealTimeDataBase()
     })
 }
 model.addFireStore = (collection,data)=>{
