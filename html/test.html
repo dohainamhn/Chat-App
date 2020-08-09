@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/chat.css">
+    <link rel="stylesheet" href="../css/test.css">
     <script src="https://kit.fontawesome.com/e303127aba.js" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
@@ -12,22 +12,21 @@
         <div class="top">Mindx-Chat</div>
         <div class="first-conversation">First Conversation</div>
         <div class="main">
-            <div class="left-menu">
-                <div class="wrap">
-                    <div class="info">
-                        from dohainamhn@gmail.com
-                    </div>
-                    <div class="content">
-                        hello boy ....
-                    </div>
-                </div>
-                <div class="arrow-left" onclick="PullLeft()">
-                    <i class="far fa-hand-point-right"></i>
+            <div class="left-menu" id="left-menu">
+                <div class="inner-left-menu" id="inner-left-menu">
+                    <div class="wrap active" id="${data[x].email}" onclick="changeActive('${data[x].email}')">
+                        <div class="info">
+                           hello 
+                        </div>
+                        <div class="content">
+                            ${message}
+                        </div>
+                    </div>` 
                 </div>
             </div>
             <div class="chat-box">
-                <div class="message">
-                    <div class="send-message">
+                <div class="message-box" id="message-box">
+                    <div class="send-message-box" id="send-message">
                         <div class="send-message-content">hello hahaha</div>
                     </div>
                     <div class="receive-message">
@@ -35,30 +34,34 @@
                         <div class="receive-message-content">hi hahahaha</div>
                     </div>
                 </div>
-                <div class="post-message" id="post-message">
-                    <input type="text" name="message" placeholder="Type a message">
-                    <button><i class="fas fa-paper-plane"></i></button>
+                <div class="post-message" >
+                    <input id="input" type="text" name="message" placeholder="Type a message">
+                    <button id="post-message" type="submit"><i class="fas fa-paper-plane"></i></button>
+                </div>
+                <div class="arrow-left" id="arrow-left">
+                    <i class="far fa-hand-point-right"></i>
+                </div>
+                <div class="arrow-right" id="arrowBtn">
+                    <i class="far fa-hand-point-left"></i>
                 </div>
             </div>
-            <div class="slidebar-menu-right " id="slidebar-menu-right">
+            <div class="slidebar-menu-right" id="slidebar-menu-right">
                 <div class="card-body" id="card-body">
-                    <div class="inner-body-card">
-                        <a href="#"> 
+                    <div class="inner-body-card" id="${data.id}" >
+                        <a href="#" onclick="changeActive('${data.email}',${data.id})"> 
                             <div class="img-card">
                                 <img src="../img/hieubui.png" class="rounded-circle" alt="">
                             </div>
                             <div class="card-info ml-3">
-                                <h6>Bui Van Hiu</h6>
-                                <p>Just Now</p>
+                                <h6>${data.name}</h6>
+                                <p>${data.email}</p>
                             </div>
                         </a>
                     </div>  
                 </div>
-                <div class="arrow-right" onclick="Pull()">
-                    <i class="far fa-hand-point-left"></i>
-                </div>
             </div>
         </div>
     </div>
+    <script src="/js/controller.js"></script>
 </body>
 </html>

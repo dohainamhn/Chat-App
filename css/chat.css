@@ -19,7 +19,7 @@
 }
 .logout-Button{
     display: flex;
-    width: 50%;
+    width: 47%;
     justify-content: flex-end;
 }
 .logout-Button i{
@@ -37,9 +37,15 @@
 }
 .main{
     height: calc(100% - 128px);
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    overflow: hidden;
 }
 .chat-box{
+    position: relative;
     height: 100%;
+    width: 100%;
 }
 .post-message{
     padding:0 20px;
@@ -112,34 +118,69 @@
     width: max-content;
     word-break: break-all;
 }
-
-/* --------------------------right menu---------------------*/
-.slidebar-menu-right
-{   
+/* ------------------------------------------------ */
+.left-menu{
     top: 133px;
     height: 100%;
     box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1);
-    width: 252px;
-    padding-left: 25px;
-    position: fixed;
+    background-color: white;
+    padding: 10px;
+    transition: width .35s ease-in-out;
+}
+.arrow-left{
+    position: absolute;
+    left: 0;
+    top:20px;
+    background-color: #50B4FE;
+    border-top-right-radius: 70%;
+    border-bottom-right-radius: 70%;
+    height: 50px;
+    width: 0;
+    box-shadow: 10px 5px 20px rgba(0, 0, 0, 0.19);
+    display: flex;
+    cursor: pointer;
+    overflow-x: hidden;
+    transition: 0.3s ;
+}
+.arrow-left i{
+    margin: auto;
+    color: white;
+}
+.active{
+    background-color: #bad9f0;
+}
+.inner-left-menu{
+    cursor: pointer;
+    transition: width 2s;
+}
+.wrap{
+    box-shadow: 0 5px 10px 0 rgba(192, 185, 185, 0.3);
+    padding: 10px;
+    margin-bottom: 20px;
+}
+.content{
+    padding-top: 10px;
+}
+/* ------------------------------------------------ */
+
+
+.slidebar-menu-right{
+    top: 133px;
+    height: 100%;
+    box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1);
+    padding: 10px;
     right: 0;
     z-index: 4;
     background-color: white;
     transition: width .35s ease-in-out;
 }
-.slidebar-menu-right:hover .arrow-right{
-    display: flex;
-    width: 40px;
-}
 .card-body{
     margin-top: 5px;
 }
-
 .inner-body-card a{
     text-decoration: none;
     margin-top: 10px;
     display: flex;
-  
 }
 .img-card{
     position: relative;
@@ -169,7 +210,7 @@
 .arrow-right{
     position: absolute;
     top:20px;
-    right:100%;
+    right: 0;
     background-color: #50B4FE;
     border-top-left-radius: 70%;
     border-bottom-left-radius: 70%;
@@ -192,53 +233,3 @@
     margin-left: 1rem !important;
 }
 
-/* --------------------------- menu left--------------------- */
-
-.left-menu{
-    top: 133px;
-    height: 100%;
-    box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1);
-    width: 252px;
-    position: fixed;
-    background-color: white;
-    padding: 10px;
-    transition: width .35s ease-in-out;
-}
-.inner-left-menu{
-    cursor: pointer;
-    padding: 10px;
-    transition: width 2s;
-}
-.wrap{
-    margin-bottom: 20px;
-    border-bottom: gray 1px solid;
-}
-.info{
-    
-}
-.content{
-    padding-top: 10px;
-}
-.left-menu:hover .arrow-left{
-    display: flex;
-    width: 40px;
-}
-.arrow-left{
-    position: absolute;
-    top: 20px;
-    left:100%;
-    background-color: #50B4FE;
-    border-top-right-radius: 70%;
-    border-bottom-right-radius: 70%;
-    height: 50px;
-    width: 0;
-    box-shadow: 10px 5px 20px rgba(0, 0, 0, 0.19);
-    display: flex;
-    cursor: pointer;
-    overflow-x: hidden;
-    transition: 0.1s ;
-}
-.arrow-left i{
-    margin: auto;
-    color: white;
-}

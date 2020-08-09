@@ -82,9 +82,6 @@ components.chatScreen = `
         <div class="inner-left-menu" id="inner-left-menu">
         
         </div>
-        <div class="arrow-left" id="arrow-left">
-            <i class="far fa-hand-point-right"></i>
-        </div>
     </div>
         <div class="chat-box">
             <div class="message-box" id="message-box">
@@ -99,14 +96,17 @@ components.chatScreen = `
                 <input id="input" type="text" name="message" placeholder="Type a message">
                 <button id="post-message" type="submit"><i class="fas fa-paper-plane"></i></button>
             </div>
+            <div class="arrow-left" id="arrow-left">
+            <i class="far fa-hand-point-right"></i>
+            </div>
+            <div class="arrow-right" id="arrowBtn">
+            <i class="far fa-hand-point-left"></i>
+            </div>
         </div>
         <div class="slidebar-menu-right" id="slidebar-menu-right">
             <div class="card-body" id="card-body">
                 
             </div>
-        <div class="arrow-right" id="arrowBtn">
-            <i class="far fa-hand-point-left"></i>
-        </div>
     </div>
     </div>
 </div>`

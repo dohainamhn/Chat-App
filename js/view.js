@@ -90,8 +90,8 @@ function setActiveScreen(x,data){
             controller.pullMenuRight('off')
             model.getKeyAfterLoadPage()
             controller.logOut()
-            console.log('ok')
-            
+            controller.hoverRightArrow()
+            controller.hoverLeftArrow()
         }
     }
 }
@@ -139,20 +139,40 @@ function addListMessage(data){
     let title = document.getElementById('title')
     let html = ""
     if(data !== undefined){
-        for(let x of data){
-            let message =""
-            if(x.lastMessage.length > 10)
-            {
-                message = `${x.lastMessage.slice(0,10)}...`
+        if(data.length !== undefined){
+            for(let x in data){
+                let message = "";
+                (data[x].lastMessage.length > 10)? message = `${data[x].lastMessage.slice(0,10)}...` : message = data[x].lastMessage;
+                (x == 0)
+                ? html += `
+                <div class="wrap active" id="${data[x].email}" onclick="changeActive('${data[x].email}')">
+                    <div class="info">
+                        ${data[x].email} 
+                    </div>
+                    <div class="content">
+                        ${message}
+                    </div>
+                </div>` 
+                : html += `
+                <div class="wrap" id="${data[x].email}" onclick="changeActive('${data[x].email}')">
+                    <div class="info">
+                        ${data[x].email} 
+                    </div>
+                    <div class="content">
+                        ${message}
+                    </div>
+                </div>`
             }
-            else message = x.lastMessage
-            html += `
-            <div class="wrap" onclick="creatConversation('${x.email}')">
+            leftMenu.innerHTML = html
+        }
+        else {
+             html += `
+            <div class="wrap" id="${data.email}" onclick="changeActive('${data.email}')">
                 <div class="info">
-                    ${x.email} 
+                    ${data.email} 
                 </div>
                 <div class="content">
-                    ${message}
+                   
                 </div>
             </div>`
         }
@@ -171,9 +191,9 @@ function addUserOnline(data){
         if(data.email !== firebase.auth().currentUser.email){
              html +=`
             <div class="inner-body-card" id="${data.id}" >
-                <a href="#" onclick="creatConversation('${data.email}')"> 
+                <a href="#" onclick="changeActive('${data.email}',${data.id})"> 
                     <div class="img-card">
-                        <img src="../Chat-App/img/hieubui.png" class="rounded-circle" alt="">
+                        <img src="../img/hieubui.png" class="rounded-circle" alt="">
                     </div>
                     <div class="card-info ml-3">
                         <h6>${data.name}</h6>
@@ -200,7 +220,7 @@ function creatConversation(email){
     let db = firebase.firestore();
     var conversations = db.collection(collectionName);
     let title = document.getElementById('title')
-    title.innerHTML = "Hello"
+    title.innerHTML = `Conversation with ${email}`
     conversations
     .where("users","in",[[email,firebase.auth().currentUser.email],[firebase.auth().currentUser.email,email]])
     .get()
@@ -235,5 +255,22 @@ function creatConversation(email){
         }
     }) 
 }
-
+changeActive = async (email,key)=>{
+    creatConversation(email)
+    let wrap = document.getElementsByClassName('wrap')
+    let id = document.getElementById(email)
+    let menuLeft = document.getElementById('left-menu')
+    for(let x of wrap){
+        x.className = "wrap"
+    }
+    if(id == null) {
+        addListMessage({email: email})
+        let id = document.getElementById(email)
+        id.className = 'wrap active'
+        id.style.display='none'
+    }
+    else id.className = 'wrap active'
+    
+    
+}
 window.onload = setActiveScreen

@@ -87,7 +87,7 @@ model.listenRealTimeFireStore = async (collection,email)=>{
         var db = firebase.firestore();
         if(collection === "conversations"){
             model.currentConversation = db.collection(collection)
-            .where("users","array-contains",model.currentUser.email)
+            .where("users","in",[[email,firebase.auth().currentUser.email],[firebase.auth().currentUser.email,email]])
             .onSnapshot(function(snapshot) {
                 snapshot.docChanges().forEach(function(change) {
                     if (change.type === "added") {
@@ -174,6 +174,7 @@ model.getAllDataFromFireStore = (collection)=>{
     .then(async (querySnapshot)=>{
         let data = []
         querySnapshot.forEach((item)=>{
+           if(item.data().messages[0] !== undefined){
             data.push({
                 id: item.id,
                 createdAt: controller.convertToTimeStamp(item.data().messages[item.data().messages.length-1]['createdAt']),
@@ -181,6 +182,7 @@ model.getAllDataFromFireStore = (collection)=>{
                 owner: controller.checkEmail(item),
                 email: item.data().users.filter((item)=>item !== model.currentUser.email)
             })
+           }
         })
        model.allConversations = controller.sortByTimeStamp(data)
        if(model.allConversations[0] !== undefined){

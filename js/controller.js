@@ -102,7 +102,7 @@ controller.pullMenuRight = (data)=>{
         }
         else{
             for(let x of cardInfo){
-                x.style.display = 'block'
+                x.style.display = 'flex'
             }
             menuRight.style.width = "250px";
             x = 'on'
@@ -117,22 +117,24 @@ controller.pullMenuLeft = (data)=>{
         x.style.display = 'none'
     }
     menuLeft.style.width = "0px";
-    let x = data
     arrowBtn.addEventListener('click',()=>{
-        if(x === 'on')
+        if(data === 'on')
         {   
             for(let x of wrap){
                 x.style.display = 'none'
             }
             menuLeft.style.width = "0px";
-            x = 'off'
+            data = 'off'
+            console.log(menuLeft)
         }
         else{
-            for(let x of wrap){
-                x.style.display = 'block'
-            }
             menuLeft.style.width = "250px";
-            x = 'on'
+            data = 'on'
+            setTimeout(()=>{
+                for(let x of wrap){
+                    x.style.display = 'block'
+                }
+            },250)
         }
     })
 }
@@ -165,4 +167,36 @@ controller.sortByTimeStamp = (data)=>{
 controller.convertToTimeStamp = (data)=>{
     let timeStamp = (new Date(data).getTime()/1000)
     return timeStamp
+}
+controller.hoverLeftArrow = ()=>{
+    let leftMenu = document.getElementById('left-menu')
+    let arrrowLeft = document.getElementById('arrow-left')
+    arrrowLeft.addEventListener('mouseover',()=>{
+        arrrowLeft.style.width = '40px'
+    })
+    arrrowLeft.addEventListener('mouseleave',()=>{
+        arrrowLeft.style.width = '0px'
+    })
+    leftMenu.addEventListener('mouseover',()=>{
+        arrrowLeft.style.width = '40px'
+    })
+    leftMenu.addEventListener('mouseleave',()=>{
+        arrrowLeft.style.width = '0px'
+    })
+}
+controller.hoverRightArrow = ()=>{
+    let MenuRight = document.getElementById('slidebar-menu-right')
+    let arrowRight = document.getElementById('arrowBtn')
+    arrowRight.addEventListener('mouseover',()=>{
+        arrowRight.style.width = '40px'
+    })
+    arrowRight.addEventListener('mouseleave',()=>{
+        arrowRight.style.width = '0px'
+    })
+    MenuRight.addEventListener('mouseover',()=>{
+        arrowRight.style.width = '40px'
+    })
+    MenuRight.addEventListener('mouseleave',()=>{
+        arrowRight.style.width = '0px'
+    })
 }
