@@ -193,7 +193,7 @@ function addUserOnline(data){
             <div class="inner-body-card" id="${data.id}" >
                 <a href="#" onclick="changeActive('${data.email}',${data.id})"> 
                     <div class="img-card">
-                        <img src="../img/hieubui.png" class="rounded-circle" alt="">
+                        <img src="../Chat-App/img/hieubui.png" class="rounded-circle" alt="">
                     </div>
                     <div class="card-info ml-3">
                         <h6>${data.name}</h6>
@@ -206,14 +206,12 @@ function addUserOnline(data){
         } 
     }    
 }
-
 function removeUserOnline(data){
    let item = document.getElementById(data)
    console.log('removed')
    item.innerHTML = ""
    item.remove()
 }
-
 function creatConversation(email){
     model.currentConversation()
     model.listenRealTimeFireStore(collectionName,email)
