@@ -132,7 +132,7 @@ function addNewMessage(input){
             }
         }
     }
-    messageBox.scrollTop = sendMessage.scrollHeight
+    sendMessage.scrollTop = sendMessage.scrollHeight
 }
 function addListMessage(data){
     let leftMenu = document.getElementById('inner-left-menu')

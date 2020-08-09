@@ -88,9 +88,6 @@ components.chatScreen = `
                 <div class="send-message" id="send-message">
                     
                 </div>
-                <div class="receive-message">
-
-                </div>
             </div>
             <div class="post-message" >
                 <input id="input" type="text" name="message" placeholder="Type a message">
