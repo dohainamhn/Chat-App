@@ -129,7 +129,7 @@
 }
 /* ------------------------------------------------ */
 .left-menu{
-    width: 250px;
+    min-width: 15%;
     top: 133px;
     height: 100%;
     box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1);
@@ -175,6 +175,7 @@
 
 
 .slidebar-menu-right{
+    min-width: 15%;
     top: 133px;
     height: 100%;
     box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1);
