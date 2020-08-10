@@ -74,7 +74,7 @@ model.pushFirebaseStore = (collection,document,data,check)=>{
     console.log(document);
     console.log(data);
    if(data !== null){
-    db.collection(collection).doc(document.id).update({
+    db.collection(collection).doc(document).update({
         messages: firebase.firestore.FieldValue.arrayUnion(data),
         checkByReceiver: check
     })

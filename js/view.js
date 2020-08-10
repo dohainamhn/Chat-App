@@ -152,8 +152,8 @@ function addListMessage(data,index){
                    
                 </div>
             </div>`
+            leftMenu.innerHTML += html
         }
-        leftMenu.innerHTML = html
     }
     else if(data == null){
         title.innerHTML = "Hãy Bắt Đầu Cuộc Trò Chuyện Bằng Cách Click Vào Menu Phải Và Chọn Người Online"
@@ -226,7 +226,7 @@ function creatConversation(email){
             }).then(function(docRef) {
                 console.log("conversation is created with ID: ", docRef.id);
                 model.currentConversationID ={
-                     id : users.id,
+                     id : id,
                     email: email
                 }
             })
@@ -237,21 +237,20 @@ function creatConversation(email){
     }) 
 }
 changeActive = async (email,key,doc)=>{
+    creatConversation(email)
     let wrap = document.getElementById(`${model.currentConversationID.email}`)
     let id = document.getElementById(email)
-    wrap.className = 'wrap'
-    creatConversation(email)
+    if(wrap !== null) wrap.className = 'wrap'
     if(id == null) {
         addListMessage({email: email})
         let id = document.getElementById(email)
         id.className = 'wrap active'
-        id.style.display='none'
     }
     else id.className = 'wrap active'
-    console.log(doc)
-    console.log(key)
-    if(key !== firebase.auth().currentUser.email){
-         model.pushFirebaseStore('conversations',doc,null,true)
+    if(doc !== undefined){
+            if(key !== firebase.auth().currentUser.email){
+                model.pushFirebaseStore('conversations',doc,null,true)
+        }
     }
 }
 window.onload = setActiveScreen
