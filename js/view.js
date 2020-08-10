@@ -75,7 +75,7 @@ function setActiveScreen(x,data){
                 e.preventDefault()
                 if(input.value.trim() !== ""){
                     if(e.keyCode == 13){
-                        model.pushFirebaseStore(collectionName,model.currentConversationID,{owner:model.currentUser.email,content:input.value,createdAt:controller.getDate()},false)
+                        model.pushFirebaseStore(collectionName,model.currentConversationID.id,{owner:model.currentUser.email,content:input.value,createdAt:controller.getDate()},false)
                         input.value=""
                     }
                 }
