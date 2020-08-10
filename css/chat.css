@@ -29,6 +29,8 @@
     cursor: pointer;
 }
 .first-conversation{
+    position: relative;
+    z-index: 10;
     font-size: larger;
     text-align: center;
     line-height: 64px;

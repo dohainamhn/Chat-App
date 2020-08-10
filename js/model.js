@@ -1,7 +1,6 @@
 const model = {}
-model.currentConversation = ()=>{
-
-};
+model.listenConversations = ()=>{};
+model.currentConversationID = undefined;
 model.currentUser = {}
 model.userOnline = []
 model.allConversations = []
@@ -38,9 +37,7 @@ model.login = (data)=>{
         controller.authenticate(error)
     });
 }
-
 model.onDisconected = ()=>{
-    console.log('add')
     var ref = firebase.database().ref("usersOnline/" + model.key);
         ref.set({
         name: firebase.auth().currentUser.displayName,
@@ -54,7 +51,6 @@ model.offListenRealTimeDataBase = (collection)=>{
 model.onListenRealTimeDataBase = (collection)=>{
     let db = firebase.database().ref(collection);
         db.on('child_added', function(data) {
-            console.log(data.val())
             addUserOnline({
                 id: data.key,
                 name: data.val().name,
@@ -64,7 +60,6 @@ model.onListenRealTimeDataBase = (collection)=>{
           
         db.on('child_removed', function(data) {
             removeUserOnline(data.key)
-            console.log('ok')
             console.log(model.userOnline.indexOf(data.key))
             if(model.userOnline.indexOf(data.key) !== -1){
                 console.log('removed :' + data.key)
@@ -86,20 +81,51 @@ model.removeFirebaseStore = (collection,document) =>{
 model.listenRealTimeFireStore = async (collection,email)=>{
         var db = firebase.firestore();
         if(collection === "conversations"){
-            model.currentConversation = db.collection(collection)
-            .where("users","in",[[email,firebase.auth().currentUser.email],[firebase.auth().currentUser.email,email]])
+            model.listenConversations = db.collection(collection)
+            .where("users","array-contains",firebase.auth().currentUser.email)
             .onSnapshot(function(snapshot) {
                 snapshot.docChanges().forEach(function(change) {
                     if (change.type === "added") {
-                        
+                        // console.log("add:");
+                        // console.log(change.doc.data());
                     }
                     if (change.type === "modified") {
+                       if(change.doc.id == model.currentConversationID){
                         let message = {
                             content:change.doc.data().messages[change.doc.data().messages.length-1]["content"],
                             owner:change.doc.data().messages[change.doc.data().messages.length-1]["owner"]
                         }
                         addNewMessage(message)
-                        console.log("Modified: ", change.doc.data().messages[change.doc.data().messages.length-1]["content"]);
+                        console.log('push');
+                       }
+                        let lastMessage = change.doc.data().messages[change.doc.data().messages.length-1]["content"]
+                        let email = change.doc.data().users.find((item)=>item !== firebase.auth().currentUser.email)
+                        let div = document.getElementById(email)
+                        let leftMenu = document.getElementById('inner-left-menu')
+                        let message = "";
+                        let html = "";
+                        (lastMessage.length > 10)? message = `${lastMessage.slice(0,20)}...` : message = lastMessage;
+                        (model.currentConversationID === change.doc.id)?
+                        html = `
+                        <div class="wrap active" id="${email}" onclick="changeActive('${email}')">
+                            <div class="info">
+                                ${email} 
+                            </div>
+                            <div class="content">
+                                ${message}
+                            </div>
+                        </div>`
+                        :html = `
+                        <div class="wrap" id="${email}" onclick="changeActive('${email}')">
+                            <div class="info">
+                                ${email} 
+                            </div>
+                            <div class="content">
+                                ${message}
+                            </div>
+                        </div>`
+                        div.remove()
+                        leftMenu.insertAdjacentHTML("afterbegin",html)
                     }
                 });
             });
@@ -188,13 +214,11 @@ model.getAllDataFromFireStore = (collection)=>{
        if(model.allConversations[0] !== undefined){
             creatConversation(model.allConversations[0]["owner"])
             addListMessage(model.allConversations)
-            controller.pullMenuLeft("off")
        }
        else 
        {
             addListMessage()
-            controller.pullMenuLeft("off")
-        
        }
     })
 }
+

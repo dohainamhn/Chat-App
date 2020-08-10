@@ -1,4 +1,3 @@
-let currentChatID = "MvE5TcYcf0aeMDdcLKpD"
 let collectionName = "conversations"
 function setActiveScreen(x,data){
     switch(x)
@@ -76,9 +75,7 @@ function setActiveScreen(x,data){
                 e.preventDefault()
                 if(input.value.trim() !== ""){
                     if(e.keyCode == 13){
-                        model.pushFirebaseStore(collectionName,currentChatID,{owner:model.currentUser.email,content:input.value,createdAt:controller.getDate()},"messages")
-                        controller.pullMenuRight('off')
-                        controller.pullMenuLeft("off")
+                        model.pushFirebaseStore(collectionName,model.currentConversationID,{owner:model.currentUser.email,content:input.value,createdAt:controller.getDate()},"messages")
                         input.value=""
                     }
                 }
@@ -87,11 +84,8 @@ function setActiveScreen(x,data){
                 }
             })
             model.getAllDataFromFireStore(collectionName)
-            controller.pullMenuRight('off')
             model.getKeyAfterLoadPage()
             controller.logOut()
-            controller.hoverRightArrow()
-            controller.hoverLeftArrow()
         }
     }
 }
@@ -142,7 +136,7 @@ function addListMessage(data){
         if(data.length !== undefined){
             for(let x in data){
                 let message = "";
-                (data[x].lastMessage.length > 10)? message = `${data[x].lastMessage.slice(0,10)}...` : message = data[x].lastMessage;
+                (data[x].lastMessage.length > 10)? message = `${data[x].lastMessage.slice(0,20)}...` : message = data[x].lastMessage;
                 (x == 0)
                 ? html += `
                 <div class="wrap active" id="${data[x].email}" onclick="changeActive('${data[x].email}')">
@@ -213,7 +207,7 @@ function removeUserOnline(data){
    item.remove()
 }
 function creatConversation(email){
-    model.currentConversation()
+    model.listenConversations()
     model.listenRealTimeFireStore(collectionName,email)
     let db = firebase.firestore();
     var conversations = db.collection(collectionName);
@@ -226,7 +220,7 @@ function creatConversation(email){
         if(!item.empty){
             let data = []
             item.forEach((users)=>{
-                currentChatID = users.id
+                model.currentConversationID = users.id
                 users.data().messages.forEach((item)=>{
                 let message = {
                     owner: item.owner,
@@ -245,7 +239,7 @@ function creatConversation(email){
                 users:[email,firebase.auth().currentUser.email]
             }).then(function(docRef) {
                 console.log("conversation is created with ID: ", docRef.id);
-                currentChatID = docRef.id
+                model.currentConversationID = docRef.id
             })
             .catch(function(error) {
                 console.error("Error creating conversation: ", error);

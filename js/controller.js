@@ -82,62 +82,6 @@ controller.logOut = function(){
           });   
     })  
 }
-controller.pullMenuRight = (data)=>{
-    let arrowBtn = document.getElementById('arrowBtn')
-    let menuRight = document.getElementById('slidebar-menu-right')
-    let cardInfo = document.getElementsByClassName('card-body')
-    for(let x of cardInfo){
-        x.style.display = 'none'
-    }
-    menuRight.style.width = "0px";
-    let x = data
-    arrowBtn.addEventListener('click',()=>{
-        if(x === 'on')
-        {   
-            for(let x of cardInfo){
-                x.style.display = 'none'
-            }
-            menuRight.style.width = "0px";
-            x = 'off'
-        }
-        else{
-            for(let x of cardInfo){
-                x.style.display = 'flex'
-            }
-            menuRight.style.width = "250px";
-            x = 'on'
-        }
-    })
-}
-controller.pullMenuLeft = (data)=>{
-    let arrowBtn = document.getElementById('arrow-left')
-    let menuLeft = document.getElementById('left-menu')
-    let wrap = document.getElementsByClassName('wrap')
-    for(let x of wrap){  
-        x.style.display = 'none'
-    }
-    menuLeft.style.width = "0px";
-    arrowBtn.addEventListener('click',()=>{
-        if(data === 'on')
-        {   
-            for(let x of wrap){
-                x.style.display = 'none'
-            }
-            menuLeft.style.width = "0px";
-            data = 'off'
-            console.log(menuLeft)
-        }
-        else{
-            menuLeft.style.width = "250px";
-            data = 'on'
-            setTimeout(()=>{
-                for(let x of wrap){
-                    x.style.display = 'block'
-                }
-            },250)
-        }
-    })
-}
 controller.getDate = ()=>{
     var today = new Date();  
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
@@ -167,36 +111,4 @@ controller.sortByTimeStamp = (data)=>{
 controller.convertToTimeStamp = (data)=>{
     let timeStamp = (new Date(data).getTime()/1000)
     return timeStamp
-}
-controller.hoverLeftArrow = ()=>{
-    let leftMenu = document.getElementById('left-menu')
-    let arrrowLeft = document.getElementById('arrow-left')
-    arrrowLeft.addEventListener('mouseover',()=>{
-        arrrowLeft.style.width = '40px'
-    })
-    arrrowLeft.addEventListener('mouseleave',()=>{
-        arrrowLeft.style.width = '0px'
-    })
-    leftMenu.addEventListener('mouseover',()=>{
-        arrrowLeft.style.width = '40px'
-    })
-    leftMenu.addEventListener('mouseleave',()=>{
-        arrrowLeft.style.width = '0px'
-    })
-}
-controller.hoverRightArrow = ()=>{
-    let MenuRight = document.getElementById('slidebar-menu-right')
-    let arrowRight = document.getElementById('arrowBtn')
-    arrowRight.addEventListener('mouseover',()=>{
-        arrowRight.style.width = '40px'
-    })
-    arrowRight.addEventListener('mouseleave',()=>{
-        arrowRight.style.width = '0px'
-    })
-    MenuRight.addEventListener('mouseover',()=>{
-        arrowRight.style.width = '40px'
-    })
-    MenuRight.addEventListener('mouseleave',()=>{
-        arrowRight.style.width = '0px'
-    })
 }

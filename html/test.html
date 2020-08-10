@@ -1,67 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/test.css">
-    <script src="https://kit.fontawesome.com/e303127aba.js" crossorigin="anonymous"></script>
-    <title>Document</title>
-</head>
-<body>
-    <div class="chat-container">
-        <div class="top">Mindx-Chat</div>
-        <div class="first-conversation">First Conversation</div>
-        <div class="main">
-            <div class="left-menu" id="left-menu">
-                <div class="inner-left-menu" id="inner-left-menu">
-                    <div class="wrap active" id="${data[x].email}" onclick="changeActive('${data[x].email}')">
-                        <div class="info">
-                           hello 
-                        </div>
-                        <div class="content">
-                            ${message}
-                        </div>
-                    </div>` 
-                </div>
-            </div>
-            <div class="chat-box">
-                <div class="message-box" id="message-box">
-                    <div class="send-message-box" id="send-message">
-                        <div class="send-message-content">hello hahaha</div>
-                    </div>
-                    <div class="receive-message">
-                        <div class="receiver">dohainamhn@gmail.com</div>
-                        <div class="receive-message-content">hi hahahaha</div>
-                    </div>
-                </div>
-                <div class="post-message" >
-                    <input id="input" type="text" name="message" placeholder="Type a message">
-                    <button id="post-message" type="submit"><i class="fas fa-paper-plane"></i></button>
-                </div>
-                <div class="arrow-left" id="arrow-left">
-                    <i class="far fa-hand-point-right"></i>
-                </div>
-                <div class="arrow-right" id="arrowBtn">
-                    <i class="far fa-hand-point-left"></i>
-                </div>
-            </div>
-            <div class="slidebar-menu-right" id="slidebar-menu-right">
-                <div class="card-body" id="card-body">
-                    <div class="inner-body-card" id="${data.id}" >
-                        <a href="#" onclick="changeActive('${data.email}',${data.id})"> 
-                            <div class="img-card">
-                                <img src="../img/hieubui.png" class="rounded-circle" alt="">
+<div class="container">
+    <div class="slick-track">
+        <div class="slick-slide" >
+            <a href="http://youtube.com" class="z-ima" style="display: flex;">
+                    <div class="img-spot">
+                        <div class="image-lazyload-img">
+                            <div href="#" class="z-image-z">
+                              <img src="https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/avatars/e/6/8/7/e687a5d265bd19b32da2fc5084e4314c.jpg">
                             </div>
-                            <div class="card-info ml-3">
-                                <h6>${data.name}</h6>
-                                <p>${data.email}</p>
+                            <i class="fas fa-play-circle fa-2x" id="image-i"></i>
+                        </div>
+                        <div class="card-infomation">
+                            <div class="z-spotlight">
+                                <i class="fas fa-star"></i>
+                                <span>Zing Choice</span>
                             </div>
-                        </a>
-                    </div>  
-                </div>
-            </div>
+                            <div class="artist-z"><a href="">Chi Dan</a></div>
+                        </div>
+                    </div> 
+            </a>
         </div>
     </div>
-    <script src="/js/controller.js"></script>
-</body>
-</html>
+</div>
