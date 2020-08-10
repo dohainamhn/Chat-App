@@ -226,7 +226,7 @@ function creatConversation(email){
             }).then(function(docRef) {
                 console.log("conversation is created with ID: ", docRef.id);
                 model.currentConversationID ={
-                     id : id,
+                     id : docRef.id,
                     email: email
                 }
             })
