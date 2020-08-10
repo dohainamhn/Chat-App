@@ -1,6 +1,6 @@
 const model = {}
 model.listenConversations = ()=>{};
-model.currentConversationID = undefined;
+model.currentConversationID = {}
 model.currentUser = {}
 model.userOnline = []
 model.allConversations = []
@@ -68,11 +68,22 @@ model.onListenRealTimeDataBase = (collection)=>{
           });
 }
 // ------------------------firesotre---------------------------------
-model.pushFirebaseStore = (collection,document,data,field)=>{
+model.pushFirebaseStore = (collection,document,data,check)=>{
     var db = firebase.firestore();
-    db.collection(collection).doc(document).update({
-        messages: firebase.firestore.FieldValue.arrayUnion(data)
+    console.log(collection)
+    console.log(document);
+    console.log(data);
+   if(data !== null){
+    db.collection(collection).doc(document.id).update({
+        messages: firebase.firestore.FieldValue.arrayUnion(data),
+        checkByReceiver: check
     })
+   }
+   else{
+    db.collection(collection).doc(document).update({
+        checkByReceiver: check
+    })
+   }
 }
 model.removeFirebaseStore = (collection,document) =>{
     var db = firebase.firestore();
@@ -90,7 +101,7 @@ model.listenRealTimeFireStore = async (collection,email)=>{
                         // console.log(change.doc.data());
                     }
                     if (change.type === "modified") {
-                       if(change.doc.id == model.currentConversationID){
+                       if(change.doc.id == model.currentConversationID.id){
                         let message = {
                             content:change.doc.data().messages[change.doc.data().messages.length-1]["content"],
                             owner:change.doc.data().messages[change.doc.data().messages.length-1]["owner"]
@@ -98,32 +109,48 @@ model.listenRealTimeFireStore = async (collection,email)=>{
                         addNewMessage(message)
                         console.log('push');
                        }
+                       console.log(change.doc.id);
                         let lastMessage = change.doc.data().messages[change.doc.data().messages.length-1]["content"]
+                        let lastMessageOwner = change.doc.data().messages[change.doc.data().messages.length-1]["owner"]
                         let email = change.doc.data().users.find((item)=>item !== firebase.auth().currentUser.email)
                         let div = document.getElementById(email)
                         let leftMenu = document.getElementById('inner-left-menu')
                         let message = "";
                         let html = "";
                         (lastMessage.length > 10)? message = `${lastMessage.slice(0,20)}...` : message = lastMessage;
-                        (model.currentConversationID === change.doc.id)?
-                        html = `
-                        <div class="wrap active" id="${email}" onclick="changeActive('${email}')">
-                            <div class="info">
-                                ${email} 
-                            </div>
-                            <div class="content">
-                                ${message}
-                            </div>
-                        </div>`
-                        :html = `
-                        <div class="wrap" id="${email}" onclick="changeActive('${email}')">
-                            <div class="info">
-                                ${email} 
-                            </div>
-                            <div class="content">
-                                ${message}
-                            </div>
-                        </div>`
+                        if(lastMessageOwner == firebase.auth().currentUser.email)
+                        {
+                            html = `
+                            <div class="wrap active" id="${email}" onclick="changeActive('${email}','${lastMessageOwner}','${change.doc.id}')">
+                                <div class="info">
+                                    ${email} 
+                                </div>
+                                <div class="content">
+                                   you: ${message}
+                                </div>
+                            </div>`
+                        }
+                        else{
+                            (model.currentConversationID.id === change.doc.id)?
+                            html = `
+                            <div class="wrap active" id="${email}" onclick="changeActive('${email}','${lastMessageOwner}','${change.doc.id}')">
+                                <div class="info">
+                                    ${email} 
+                                </div>
+                                <div class="content">
+                                    ${message}
+                                </div>
+                            </div>`
+                            :html = `
+                            <div class="wrap notcheck" id="${email}" onclick="changeActive('${email}','${lastMessageOwner}','${change.doc.id}')">
+                                <div class="info">
+                                    ${email} 
+                                </div>
+                                <div class="content">
+                                    ${message}
+                                </div>
+                            </div>`
+                        }
                         div.remove()
                         leftMenu.insertAdjacentHTML("afterbegin",html)
                     }
@@ -206,14 +233,33 @@ model.getAllDataFromFireStore = (collection)=>{
                 createdAt: controller.convertToTimeStamp(item.data().messages[item.data().messages.length-1]['createdAt']),
                 lastMessage: controller.checkUndefine(item),
                 owner: controller.checkEmail(item),
+                check: controller.checkByReceiver(item),
+                lassMessageOwner: item.data().messages[item.data().messages.length-1]['owner'],
                 email: item.data().users.filter((item)=>item !== model.currentUser.email)
             })
            }
         })
        model.allConversations = controller.sortByTimeStamp(data)
        if(model.allConversations[0] !== undefined){
-            creatConversation(model.allConversations[0]["owner"])
-            addListMessage(model.allConversations)
+           var count = undefined;
+           for(let x of model.allConversations){
+               if(x.lassMessageOwner == firebase.auth().currentUser.email){
+                    creatConversation(x["owner"])
+                    model.currentConversationID.id = x.id
+                    count = model.allConversations.indexOf(x);
+                    break;
+               }
+               else{
+                    if(x.check == true){
+                        creatConversation(x["owner"])
+                        model.currentConversationID.id = x.id
+                        count = model.allConversations.indexOf(x);
+                        break;
+                    }
+               }
+               
+           }
+            addListMessage(model.allConversations,count)
        }
        else 
        {

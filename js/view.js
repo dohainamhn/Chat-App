@@ -75,7 +75,7 @@ function setActiveScreen(x,data){
                 e.preventDefault()
                 if(input.value.trim() !== ""){
                     if(e.keyCode == 13){
-                        model.pushFirebaseStore(collectionName,model.currentConversationID,{owner:model.currentUser.email,content:input.value,createdAt:controller.getDate()},"messages")
+                        model.pushFirebaseStore(collectionName,model.currentConversationID,{owner:model.currentUser.email,content:input.value,createdAt:controller.getDate()},false)
                         input.value=""
                     }
                 }
@@ -128,7 +128,8 @@ function addNewMessage(input){
     }
     sendMessage.scrollTop = sendMessage.scrollHeight
 }
-function addListMessage(data){
+function addListMessage(data,index){
+    console.log(data)
     let leftMenu = document.getElementById('inner-left-menu')
     let title = document.getElementById('title')
     let html = ""
@@ -137,31 +138,13 @@ function addListMessage(data){
             for(let x in data){
                 let message = "";
                 (data[x].lastMessage.length > 10)? message = `${data[x].lastMessage.slice(0,20)}...` : message = data[x].lastMessage;
-                (x == 0)
-                ? html += `
-                <div class="wrap active" id="${data[x].email}" onclick="changeActive('${data[x].email}')">
-                    <div class="info">
-                        ${data[x].email} 
-                    </div>
-                    <div class="content">
-                        ${message}
-                    </div>
-                </div>` 
-                : html += `
-                <div class="wrap" id="${data[x].email}" onclick="changeActive('${data[x].email}')">
-                    <div class="info">
-                        ${data[x].email} 
-                    </div>
-                    <div class="content">
-                        ${message}
-                    </div>
-                </div>`
-            }
+                html += controller.makeHtmlForm(data[x],message,x,index)
+            }  
             leftMenu.innerHTML = html
         }
         else {
              html += `
-            <div class="wrap" id="${data.email}" onclick="changeActive('${data.email}')">
+            <div class="wrap" id="${data.email}" onclick="changeActive('${data.email}','${data.lassMessageOwner}','${data.id}')">
                 <div class="info">
                     ${data.email} 
                 </div>
@@ -220,7 +203,10 @@ function creatConversation(email){
         if(!item.empty){
             let data = []
             item.forEach((users)=>{
-                model.currentConversationID = users.id
+                model.currentConversationID = {
+                    id : users.id,
+                    email: email
+                }
                 users.data().messages.forEach((item)=>{
                 let message = {
                     owner: item.owner,
@@ -239,7 +225,10 @@ function creatConversation(email){
                 users:[email,firebase.auth().currentUser.email]
             }).then(function(docRef) {
                 console.log("conversation is created with ID: ", docRef.id);
-                model.currentConversationID = docRef.id
+                model.currentConversationID ={
+                     id : users.id,
+                    email: email
+                }
             })
             .catch(function(error) {
                 console.error("Error creating conversation: ", error);
@@ -247,14 +236,11 @@ function creatConversation(email){
         }
     }) 
 }
-changeActive = async (email,key)=>{
-    creatConversation(email)
-    let wrap = document.getElementsByClassName('wrap')
+changeActive = async (email,key,doc)=>{
+    let wrap = document.getElementById(`${model.currentConversationID.email}`)
     let id = document.getElementById(email)
-    let menuLeft = document.getElementById('left-menu')
-    for(let x of wrap){
-        x.className = "wrap"
-    }
+    wrap.className = 'wrap'
+    creatConversation(email)
     if(id == null) {
         addListMessage({email: email})
         let id = document.getElementById(email)
@@ -262,7 +248,10 @@ changeActive = async (email,key)=>{
         id.style.display='none'
     }
     else id.className = 'wrap active'
-    
-    
+    console.log(doc)
+    console.log(key)
+    if(key !== firebase.auth().currentUser.email){
+         model.pushFirebaseStore('conversations',doc,null,true)
+    }
 }
 window.onload = setActiveScreen

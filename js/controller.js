@@ -93,6 +93,10 @@ controller.checkUndefine = (item)=>{
         return item.data().messages[item.data().messages.length-1]['content']
     }
 }
+controller.checkByReceiver = (item)=>{
+    if(item.data().checkByReceiver == true) return true
+    else return false
+}
 controller.checkEmail = (item)=>{
     let user = ""
     for(let x of item.data().users)
@@ -112,3 +116,143 @@ controller.convertToTimeStamp = (data)=>{
     let timeStamp = (new Date(data).getTime()/1000)
     return timeStamp
 }
+controller.makeHtmlForm = (data,message,x,index)=>{
+    let html = ""
+    if(data.lassMessageOwner == firebase.auth().currentUser.email){
+        if(data.lassMessageOwner == firebase.auth().currentUser.email){
+            (index == x)
+            ? html += `
+            <div class="wrap active" id="${data.email}" onclick="changeActive('${data.email}','${data.lassMessageOwner}','${data.id}')">
+                <div class="info">
+                    ${data.email} 
+                </div>
+                <div class="content">
+                    you: ${message}
+                </div>
+            </div>` 
+            : html += `
+            <div class="wrap" id="${data.email}" onclick="changeActive('${data.email}','${data.lassMessageOwner}','${data.id}')">
+                <div class="info">
+                    ${data.email} 
+                </div>
+                <div class="content">
+                    you: ${message}
+                </div>
+            </div>`
+        }
+        else{
+            (index == x)
+            ? html += `
+            <div class="wrap active" id="${data.email}" onclick="changeActive('${data.email}','${data.lassMessageOwner}','${data.id}')">
+                <div class="info">
+                    ${data.email} 
+                </div>
+                <div class="content">
+                    ${message}
+                </div>
+            </div>` 
+            : html += `
+            <div class="wrap" id="${data.email}" onclick="changeActive('${data.email}','${data.lassMessageOwner}','${data.id}')">
+                <div class="info">
+                    ${data.email} 
+                </div>
+                <div class="content">
+                    ${message}
+                </div>
+            </div>`
+        }
+    }
+    else{
+        if(data.check == true){
+            if(data.lassMessageOwner == firebase.auth().currentUser.email){
+                (index == x)
+                ? html += `
+                <div class="wrap active" id="${data.email}" onclick="changeActive('${data.email}','${data.lassMessageOwner}','${data.id}')">
+                    <div class="info">
+                        ${data.email} 
+                    </div>
+                    <div class="content">
+                        you: ${message}
+                    </div>
+                </div>` 
+                : html += `
+                <div class="wrap" id="${data.email}" onclick="changeActive('${data.email}','${data.lassMessageOwner}','${data.id}')">
+                    <div class="info">
+                        ${data.email} 
+                    </div>
+                    <div class="content">
+                        you: ${message}
+                    </div>
+                </div>`
+            }
+            else{
+                (index == x)
+                ? html += `
+                <div class="wrap active" id="${data.email}" onclick="changeActive('${data.email}','${data.lassMessageOwner}','${data.id}')">
+                    <div class="info">
+                        ${data.email} 
+                    </div>
+                    <div class="content">
+                        ${message}
+                    </div>
+                </div>` 
+                : html += `
+                <div class="wrap" id="${data.email}" onclick="changeActive('${data.email}','${data.lassMessageOwner}','${data.id}')">
+                    <div class="info">
+                        ${data.email} 
+                    </div>
+                    <div class="content">
+                        ${message}
+                    </div>
+                </div>`
+            }
+        }
+        else{
+            if(data.lassMessageOwner == firebase.auth().currentUser.email){
+                (index == x)
+                ? html += `
+                <div class="wrap active notcheck" id="${data.email}" onclick="changeActive('${data.email}','${data.lassMessageOwner}','${data.id}')">
+                    <div class="info">
+                        ${data.email} 
+                    </div>
+                    <div class="content">
+                        you: ${message}
+                    </div>
+                </div>` 
+                : html += `
+                <div class="wrap notcheck" id="${data.email}" onclick="changeActive('${data.email}','${data.lassMessageOwner}','${data.id}')">
+                    <div class="info">
+                        ${data.email} 
+                    </div>
+                    <div class="content">
+                        you: ${message}
+                    </div>
+                </div>`
+            }
+            else{
+                (index == x)
+                ? html += `
+                <div class="wrap active notcheck" id="${data.email}" onclick="changeActive('${data.email}','${data.lassMessageOwner}','${data.id}')">
+                    <div class="info">
+                        ${data.email} 
+                    </div>
+                    <div class="content">
+                        ${message}
+                    </div>
+                </div>` 
+                : html += `
+                <div class="wrap notcheck" id="${data.email}" onclick="changeActive('${data.email}','${data.lassMessageOwner}','${data.id}')">
+                    <div class="info">
+                        ${data.email} 
+                    </div>
+                    <div class="content">
+                        ${message}
+                    </div>
+                </div>`
+            }
+        }
+    }
+    return html
+}
+    
+
