@@ -93,7 +93,11 @@ function setActiveScreen(x,data){
 function addNewMessage(input){
     let sendMessage = document.getElementById('send-message')
     let messageBox = document.getElementById('message-box')
-    if(input.length === undefined){
+    if(input == "")
+    {
+        sendMessage.innerHTML =""
+    }
+    else if(input.length === undefined){
         if(input.owner == model.currentUser.email){
             let html = `<div class="send-message-box"><div class="send-message-content">${input.content}</div></div>`
             sendMessage.innerHTML += html
@@ -229,6 +233,7 @@ function creatConversation(email){
                      id : docRef.id,
                     email: email
                 }
+                addNewMessage("")
             })
             .catch(function(error) {
                 console.error("Error creating conversation: ", error);
